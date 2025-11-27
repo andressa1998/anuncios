@@ -1,0 +1,65 @@
+name: Generate and Deploy Site
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install requirements (if exists)
+        run: |
+          if [ -f requirements.txt ]; then
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+          fi
+
+      - name: Run generator script
+        # espera que seu script esteja em scripts/generate_site.py e escreva o site em ./site/
+        run: |
+          python -u scripts/generate_site.py
+
+      - name: Prepare gh-pages branch and deploy site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # configura git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Se gh-pages existir, faça checkout; caso contrário crie orphan
+          if git rev-parse --verify gh-pages >/dev/null 2>&1; then
+            git checkout gh-pages
+            git rm -rf . || true
+          else
+            git checkout --orphan gh-pages
+            git rm -rf . || true
+          fi
+
+          # copia arquivos gerados do diretório 'site' (criado pelo script)
+          cp -r ../$(pwd)/site/* . || true
+
+          # caso não haja nada novo, evita erro de commit
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "Site: atualização automática via Actions [skip ci]" || true
+            # Força o push para a branch gh-pages
+            git push --force --set-upstream origin gh-pages
+          else
+            echo "Nenhuma mudança para publicar."
+          fi
