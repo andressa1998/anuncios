@@ -1,4 +1,4 @@
-name: Atualizar HTML automaticamente
+lname: Atualizar HTML automaticamente
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
         pip install requests
 
     - name: Rodar script Python
-      run: python seu_script.py
+      run: python perfil.py
 
     - name: Commitar alterações
       run: |
