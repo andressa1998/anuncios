@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel Tech – Gerenciamento de Promoções</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen">
+        <h1>WHEEL TECH BICYCLING</h1>
+        <div class="login-box">
+            <input type="text" id="user" placeholder="Usuário">
+            <input type="password" id="pass" placeholder="Senha">
+            <button onclick="login()">Entrar</button>
+        </div>
+        <p id="login-error"></p>
+    </div>
+
+    <div id="app" style="display:none;">
+        <header>
+            <h2>Promoções Ativas e Candidatas</h2>
+            <button onclick="exportExcel()">Exportar XLSX</button>
+        </header>
+
+        <table id="promo-table">
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Tipo</th>
+                    <th>Promoção</th>
+                    <th>Status</th>
+                    <th>Preço Promo</th>
+                    <th>Preço Original</th>
+                    <th>Min Desc.</th>
+                    <th>Max Desc.</th>
+                    <th>⚠️ Divergência</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
