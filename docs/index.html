@@ -1,143 +1,80 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WHEEL TECH BICYCLING — Painel</title>
-
-  <!-- XLSX (export) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-  <link rel="stylesheet" href="estilo.css" />
+  <meta charset="UTF-8">
+  <title>WHEEL TECH BICYCLING - Painel</title>
+  <link rel="stylesheet" href="estilo.css">
 </head>
+
 <body>
-  <div class="app">
-    <!-- SIDEBAR -->
+
+  <!-- === TELA DE LOGIN === -->
+  <section id="login-screen" class="login-screen">
+    <div class="login-box">
+      <h1 class="login-title">WHEEL TECH<br>BICYCLING</h1>
+
+      <input type="text" id="username" placeholder="Usuário">
+      <input type="password" id="password" placeholder="Senha">
+
+      <button id="login-btn" class="login-btn">Entrar</button>
+
+      <p id="login-error" class="error"></p>
+    </div>
+  </section>
+
+  <!-- === PAINEL PRINCIPAL (SÓ APARECE APÓS LOGIN) === -->
+  <div id="dashboard" class="dashboard" style="display:none;">
+
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="brand">
-        <div class="logo">
-          <!-- roda + haste icon (inline SVG small) -->
-          <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden>
-            <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5" fill="none"/>
-            <path d="M12 3v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M12 21v-4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <div class="company">WHEEL TECH</div>
-          <div class="company-sub">BICYCLING</div>
-        </div>
-      </div>
+      <div class="brand">WHEEL TECH<br>BICYCLING</div>
 
-      <nav class="menu">
-        <button id="btn-anuncios" class="menu-btn active">
-          <!-- icon -->
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-            <path d="M3 7h18v4H3zM3 3h18v2H3zM3 17h18v4H3z" fill="currentColor"/>
-          </svg>
-          Anúncios em Promoção
-        </button>
-
-        <button id="btn-divergencias" class="menu-btn">
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-            <path d="M12 2v6l4-2" fill="currentColor"/>
-          </svg>
-          Divergências
-        </button>
-
-        <div class="spacer"></div>
-
-        <div class="credits">Painel • WHEEL TECH</div>
+      <nav>
+        <button id="btn-anuncios" class="menu-btn">Anúncios em Promoção</button>
       </nav>
     </aside>
 
-    <!-- MAIN -->
+    <!-- Conteúdo -->
     <main class="main">
-      <!-- area login -->
-      <section id="login-area" class="card login-card">
-        <h2>Acesso Restrito</h2>
-        <div class="input-row">
-          <input id="username" placeholder="Usuário" />
-        </div>
-        <div class="input-row">
-          <input id="password" type="password" placeholder="Senha" />
-        </div>
-        <div class="actions">
-          <button id="login-btn" class="btn primary">Entrar</button>
-        </div>
-        <p id="login-error" class="hint error"></p>
-        <p class="hint small">Usuário: <b>RONALD</b> — Senha: <b>2101</b></p>
-      </section>
 
-      <!-- dashboard (oculto até login) -->
-      <section id="dashboard" class="dashboard" style="display:none;">
-        <header class="top">
-          <div class="top-left">
-            <h1>Anúncios em Promoção</h1>
-            <p class="subtitle">Resumo em tempo real — WHEEL TECH BICYCLING</p>
-          </div>
-          <div class="top-actions">
-            <button id="export-btn" class="btn energetic">
-              <!-- save icon -->
-              <svg class="icon" viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14l4-2 4 2 4-2 4 2V5a2 2 0 0 0-2-2z" fill="currentColor"/></svg>
-              Exportar XLSX
-            </button>
-          </div>
+      <section id="content-anuncios" class="content-card" style="display:none;">
+        <header class="top-bar">
+          <h1>Anúncios em Promoção</h1>
+          <button id="export-btn" class="export-btn">Exportar XLSX</button>
         </header>
 
-        <section class="cards">
-          <div class="card stat">
-            <div class="stat-title">Itens</div>
-            <div id="stat-itens" class="stat-value">—</div>
-          </div>
-          <div class="card stat">
-            <div class="stat-title">Promoções Ativas</div>
-            <div id="stat-promos" class="stat-value">—</div>
-          </div>
-          <div class="card stat highlight">
-            <div class="stat-title">Divergências</div>
-            <div id="stat-divs" class="stat-value">—</div>
-          </div>
-        </section>
-
-        <section class="table-card card">
-          <div class="table-controls">
-            <input id="search" placeholder="Pesquisar item, promoção..." />
-            <select id="filter-status">
-              <option value="">Todos os status</option>
-              <option value="started">started</option>
-              <option value="candidate">candidate</option>
-            </select>
-          </div>
-
+        <div class="card">
           <div class="table-wrapper">
-            <table id="tabela-promos" class="data-table">
+            <table id="tabela-promos">
               <thead>
                 <tr>
                   <th>Item ID</th>
                   <th>Promoção</th>
                   <th>Status</th>
-                  <th>Preço Mercado</th>
-                  <th>Preço Orig.</th>
-                  <th>Min Desc.</th>
-                  <th>Max Desc.</th>
-                  <th>Preço Sug.</th>
-                  <th>Diverg.</th>
+                  <th>Mercado</th>
+                  <th>Original</th>
+                  <th>Mín. Desc</th>
+                  <th>Máx. Desc</th>
+                  <th>Sugerido</th>
+                  <th>Divergência</th>
                 </tr>
               </thead>
               <tbody></tbody>
             </table>
           </div>
-        </section>
+        </div>
 
-        <section class="card">
-          <h3>Itens com Divergência</h3>
+        <div class="card">
+          <h2>Itens com Divergência</h2>
           <ul id="lista-divergencias" class="lista-div"></ul>
-        </section>
+        </div>
       </section>
+
     </main>
   </div>
 
-  <script src="script.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="script.js"></script>
+
 </body>
 </html>
