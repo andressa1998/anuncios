@@ -1,15 +1,20 @@
-// --- LOGIN ---
-document.getElementById("login-btn").addEventListener("click", () => {
-    const user = document.getElementById("username").value.trim();
-    const pass = document.getElementById("password").value.trim();
+// LOGIN CONFIGURADO AQUI
+const LOGIN_USER = "admin";
+const LOGIN_PASS = "1234";
 
-    if (user === "RONALD" && pass === "2101") {
-        document.getElementById("login-screen").style.display = "none";
-        document.getElementById("dashboard").style.display = "flex";
-    } else {
-        document.getElementById("login-error").textContent = "Usuário ou senha incorretos.";
-    }
-});
+// Função de login
+function fazerLogin() {
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  if (user === LOGIN_USER && pass === LOGIN_PASS) {
+    window.location.href = "dashboard.html"; // vai para o painel
+  } else {
+    document.getElementById("login-error").innerText = "Usuário ou senha incorretos.";
+  }
+}
+
+document.getElementById("login-btn")?.addEventListener("click", fazerLogin);
 
 // --- MOSTRAR ANÚNCIOS AO CLICAR ---
 document.getElementById("btn-anuncios").addEventListener("click", () => {
