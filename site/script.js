@@ -11,12 +11,14 @@ document.getElementById("login-btn").addEventListener("click", () => {
 
     if(users[username] && users[username] === password){
         document.getElementById("login-container").style.display = "none";
-        document.getElementById("main-container").style.display = "block";
-        carregarTabela();
+        document.getElementById("content-container").style.display = "block";
     } else {
         errorEl.textContent = "Usuário ou senha incorretos!";
     }
 });
+
+// Botão da sidebar
+document.getElementById("btn-anuncios").addEventListener("click", carregarTabela);
 
 async function carregarTabela(){
     const response = await fetch("dados.json");
