@@ -1,126 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>WHEEL TECH BICYCLING - Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wheel Tech Bicycling - Login</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #004aad, #00b76f);
-    }
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #0057ff, #00c66f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Segoe UI", sans-serif;
+        }
 
-    /* Caixa central */
-    .login-box {
-      background: rgba(255, 255, 255, 0.92);
-      padding: 40px;
-      width: 350px;
-      border-radius: 14px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.15);
-      text-align: center;
-      backdrop-filter: blur(4px);
-    }
+        .login-box {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 14px;
+            width: 350px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
 
-    /* Título com efeito metálico */
-    .login-box h1 {
-      margin: 0 0 25px 0;
-      font-size: 24px;
-      letter-spacing: 1px;
-      background: linear-gradient(
-        90deg,
-        #d7d7d7,
-        #ffffff,
-        #b4b4b4,
-        #f0f0f0,
-        #cfcfcf
-      );
-      background-size: 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: metal 3s linear infinite;
-    }
+        .login-title {
+            font-size: 26px;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            font-weight: 700;
+            background: linear-gradient(to right, #d4d4d4, #f7f7f7, #b9b9b9);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
 
-    @keyframes metal {
-      0% { background-position: 0%; }
-      100% { background-position: 200%; }
-    }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
 
-    /* Inputs */
-    .login-box input {
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
-      border-radius: 8px;
-      border: 1px solid #aaa;
-      font-size: 15px;
-    }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0057ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-    /* Botão */
-    .login-btn {
-      margin-top: 22px;
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #0077ff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+        .login-btn:hover {
+            background: #0042c2;
+        }
 
-    .login-btn:hover {
-      background: #005fcc;
-      transform: scale(1.02);
-    }
-
-    /* Erro */
-    #login-error {
-      margin-top: 10px;
-      color: #d10000;
-      font-weight: bold;
-      min-height: 24px;
-    }
-  </style>
+        #login-error {
+            margin-top: 10px;
+            color: #ffdddd;
+            font-size: 14px;
+            min-height: 20px;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="login-box">
+        <div class="login-title">WHEEL TECH BICYCLING</div>
 
-  <div class="login-box">
-    <h1>WHEEL TECH<br>BICYCLING</h1>
+        <input id="username" type="text" placeholder="Usuário" />
+        <input id="password" type="password" placeholder="Senha" />
 
-    <input type="text" id="username" placeholder="Usuário">
-    <input type="password" id="password" placeholder="Senha">
+        <button class="login-btn" id="login-btn">Entrar</button>
 
-    <button id="login-btn" class="login-btn">Entrar</button>
+        <div id="login-error"></div>
+    </div>
 
-    <p id="login-error"></p>
-  </div>
-
-  <script>
-    document.getElementById("login-btn").addEventListener("click", function() {
-      const user = document.getElementById("username").value.trim();
-      const pass = document.getElementById("password").value.trim();
-      const error = document.getElementById("login-error");
-
-      if (user === "" || pass === "") {
-        error.textContent = "Preencha usuário e senha.";
-        return;
-      }
-
-      // LOGIN SIMPLES (temporário)
-      if (user === "admin" && pass === "123") {
-        window.location.href = "dashboard.html"; // depois vamos criar
-      } else {
-        error.textContent = "Usuário ou senha incorretos.";
-      }
-    });
-  </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
