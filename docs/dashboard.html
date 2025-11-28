@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Wheel Tech Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            font-family: Arial, sans-serif;
+            background: #eef4ff;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 230px;
+            background: #004aad; /* azul sólido */
+            height: 100vh;
+            padding: 20px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .menu-btn {
+            margin-top: 30px;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #00b76f; /* verde suave */
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .menu-btn:hover {
+            background: #009957;
+        }
+
+        /* AREA PRINCIPAL */
+        .main {
+            flex: 1;
+            padding: 30px;
+        }
+
+        #conteudo {
+            display: none;
+            margin-top: 20px;
+        }
+
+        /* DESTACAR MLBs REPETIDOS */
+        .dup1 { background: #fff1a8; }
+        .dup2 { background: #ffc7c7; }
+        .dup3 { background: #c7ffe2; }
+    </style>
+
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Wheel Tech</h2>
+        <button class="menu-btn" onclick="mostrarPromos()">Anúncios em promoção</button>
+    </div>
+
+    <div class="main">
+        <h1>Painel</h1>
+
+        <div id="conteudo">
+            <h2>Itens em Promoção</h2>
+            <table id="tabela" border="1" cellspacing="0" cellpadding="8"></table>
+        </div>
+    </div>
+
+<script>
+function mostrarPromos() {
+    document.getElementById("conteudo").style.display = "block";
+
+    fetch("dados.json")
+        .then(r => r.json())
+        .then(dados => montarTabela(dados));
+}
+
+function montarTabela(lista) {
+
+    // Identificar MLB repetidos
+    let contador = {};
+    lista.forEach(i => {
+        contador[i.mlb] = (contador[i.mlb] || 0) + 1;
+    });
+
+    let cores = {};
+    let corIndex = 1;
+
+    lista.forEach(i => {
+        if (contador[i.mlb] > 1) {
+            if (!cores[i.mlb]) {
+                cores[i.mlb] = "dup" + corIndex;
+                corIndex++;
+                if (corIndex > 3) corIndex = 1;
+            }
+        }
+    });
+
+    let tabela = `
+        <tr>
+            <th>MLB</th>
+            <th>Título</th>
+            <th>Status</th>
+        </tr>
+    `;
+
+    lista.forEach(item => {
+
+        let classe = cores[item.mlb] || "";
+
+        let status = item.status;
+        if (status === "started") status = "ATIVO";
+        if (status === "candidate") status = "elegível";
+
+        tabela += `
+            <tr class="${classe}">
+                <td>${item.mlb}</td>
+                <td>${item.titulo}</td>
+                <td>${status}</td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("tabela").innerHTML = tabela;
+}
+</script>
+
+</body>
+</html>

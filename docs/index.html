@@ -1,135 +1,126 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <title>Wheel Tech Dashboard</title>
+  <meta charset="UTF-8">
+  <title>WHEEL TECH BICYCLING - Login</title>
 
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            font-family: Arial, sans-serif;
-            background: #eef4ff;
-        }
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #004aad, #00b76f);
+    }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 230px;
-            background: #004aad; /* azul sólido */
-            height: 100vh;
-            padding: 20px;
-            color: white;
-            font-size: 18px;
-        }
+    /* Caixa central */
+    .login-box {
+      background: rgba(255, 255, 255, 0.92);
+      padding: 40px;
+      width: 350px;
+      border-radius: 14px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.15);
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
 
-        .menu-btn {
-            margin-top: 30px;
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: #00b76f; /* verde suave */
-            color: white;
-            font-size: 17px;
-            cursor: pointer;
-        }
+    /* Título com efeito metálico */
+    .login-box h1 {
+      margin: 0 0 25px 0;
+      font-size: 24px;
+      letter-spacing: 1px;
+      background: linear-gradient(
+        90deg,
+        #d7d7d7,
+        #ffffff,
+        #b4b4b4,
+        #f0f0f0,
+        #cfcfcf
+      );
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: metal 3s linear infinite;
+    }
 
-        .menu-btn:hover {
-            background: #009957;
-        }
+    @keyframes metal {
+      0% { background-position: 0%; }
+      100% { background-position: 200%; }
+    }
 
-        /* AREA PRINCIPAL */
-        .main {
-            flex: 1;
-            padding: 30px;
-        }
+    /* Inputs */
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 15px;
+    }
 
-        #conteudo {
-            display: none;
-            margin-top: 20px;
-        }
+    /* Botão */
+    .login-btn {
+      margin-top: 22px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #0077ff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
 
-        /* DESTACAR MLBs REPETIDOS */
-        .dup1 { background: #fff1a8; }
-        .dup2 { background: #ffc7c7; }
-        .dup3 { background: #c7ffe2; }
-    </style>
+    .login-btn:hover {
+      background: #005fcc;
+      transform: scale(1.02);
+    }
 
+    /* Erro */
+    #login-error {
+      margin-top: 10px;
+      color: #d10000;
+      font-weight: bold;
+      min-height: 24px;
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="sidebar">
-        <h2>Wheel Tech</h2>
-        <button class="menu-btn" onclick="mostrarPromos()">Anúncios em promoção</button>
-    </div>
+  <div class="login-box">
+    <h1>WHEEL TECH<br>BICYCLING</h1>
 
-    <div class="main">
-        <h1>Painel</h1>
+    <input type="text" id="username" placeholder="Usuário">
+    <input type="password" id="password" placeholder="Senha">
 
-        <div id="conteudo">
-            <h2>Itens em Promoção</h2>
-            <table id="tabela" border="1" cellspacing="0" cellpadding="8"></table>
-        </div>
-    </div>
+    <button id="login-btn" class="login-btn">Entrar</button>
 
-<script>
-function mostrarPromos() {
-    document.getElementById("conteudo").style.display = "block";
+    <p id="login-error"></p>
+  </div>
 
-    fetch("dados.json")
-        .then(r => r.json())
-        .then(dados => montarTabela(dados));
-}
+  <script>
+    document.getElementById("login-btn").addEventListener("click", function() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      const error = document.getElementById("login-error");
 
-function montarTabela(lista) {
+      if (user === "" || pass === "") {
+        error.textContent = "Preencha usuário e senha.";
+        return;
+      }
 
-    // Identificar MLB repetidos
-    let contador = {};
-    lista.forEach(i => {
-        contador[i.mlb] = (contador[i.mlb] || 0) + 1;
+      // LOGIN SIMPLES (temporário)
+      if (user === "admin" && pass === "123") {
+        window.location.href = "dashboard.html"; // depois vamos criar
+      } else {
+        error.textContent = "Usuário ou senha incorretos.";
+      }
     });
-
-    let cores = {};
-    let corIndex = 1;
-
-    lista.forEach(i => {
-        if (contador[i.mlb] > 1) {
-            if (!cores[i.mlb]) {
-                cores[i.mlb] = "dup" + corIndex;
-                corIndex++;
-                if (corIndex > 3) corIndex = 1;
-            }
-        }
-    });
-
-    let tabela = `
-        <tr>
-            <th>MLB</th>
-            <th>Título</th>
-            <th>Status</th>
-        </tr>
-    `;
-
-    lista.forEach(item => {
-
-        let classe = cores[item.mlb] || "";
-
-        let status = item.status;
-        if (status === "started") status = "ATIVO";
-        if (status === "candidate") status = "elegível";
-
-        tabela += `
-            <tr class="${classe}">
-                <td>${item.mlb}</td>
-                <td>${item.titulo}</td>
-                <td>${status}</td>
-            </tr>
-        `;
-    });
-
-    document.getElementById("tabela").innerHTML = tabela;
-}
-</script>
+  </script>
 
 </body>
 </html>
