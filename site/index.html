@@ -2,24 +2,45 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Promoções</title>
+    <title>WHEEL TECH BICYCLING - Promoções</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <h1>Promoções Atuais</h1>
-    <table id="tabela-promos">
-        <thead>
-            <tr>
-                <th>Item ID</th>
-                <th>Nome Promoção</th>
-                <th>Status</th>
-                <th>Preço Mercado</th>
-                <th>Preço Original</th>
-                <th>Máx. Desconto</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <div id="login-container">
+        <h1>WHEEL TECH BICYCLING</h1>
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Usuário">
+        <input type="password" id="password" placeholder="Senha">
+        <button id="login-btn">Entrar</button>
+        <p id="login-error" class="error"></p>
+    </div>
+
+    <div id="main-container" style="display:none;">
+        <h1>Promoções Atuais</h1>
+        <button id="export-btn">Exportar XLSX</button>
+        
+        <table id="tabela-promos">
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Nome Promoção</th>
+                    <th>Status</th>
+                    <th>Preço Mercado</th>
+                    <th>Preço Original</th>
+                    <th>Mín. Desconto</th>
+                    <th>Máx. Desconto</th>
+                    <th>Preço Sugerido</th>
+                    <th>Divergência</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h2>Itens com Divergência</h2>
+        <ul id="lista-divergencias"></ul>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
