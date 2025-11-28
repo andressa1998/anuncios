@@ -1,89 +1,37 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wheel Tech Bicycling - Login</title>
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #0057ff, #00c66f);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: "Segoe UI", sans-serif;
-        }
-
-        .login-box {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 14px;
-            width: 350px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-            text-align: center;
-        }
-
-        .login-title {
-            font-size: 26px;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
-            font-weight: 700;
-            background: linear-gradient(to right, #d4d4d4, #f7f7f7, #b9b9b9);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: #0057ff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .login-btn:hover {
-            background: #0042c2;
-        }
-
-        #login-error {
-            margin-top: 10px;
-            color: #ffdddd;
-            font-size: 14px;
-            min-height: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Wheel Tech Bicycling - Login</title>
+<link rel="stylesheet" href="estilo.css">
 </head>
 
-<body>
-    <div class="login-box">
-        <div class="login-title">WHEEL TECH BICYCLING</div>
+<body class="login-body">
+    <div class="login-container">
+        <h1 class="titulo-metalico">WHEEL TECH BICYCLING</h1>
 
-        <input id="username" type="text" placeholder="Usuário" />
-        <input id="password" type="password" placeholder="Senha" />
+        <div class="login-box">
+            <input type="text" id="usuario" placeholder="Usuário">
+            <input type="password" id="senha" placeholder="Senha">
+            <button onclick="login()">Entrar</button>
 
-        <button class="login-btn" id="login-btn">Entrar</button>
-
-        <div id="login-error"></div>
+            <p id="erro" class="erro-login"></p>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+<script>
+function login() {
+    const u = document.getElementById("usuario").value.trim();
+    const s = document.getElementById("senha").value.trim();
+
+    if (u === "admin" && s === "123") {
+        localStorage.setItem("logado", "sim");
+        window.location.href = "dashboard.html";
+    } else {
+        document.getElementById("erro").innerText = "Usuário ou senha incorretos";
+    }
+}
+</script>
+
 </body>
 </html>
