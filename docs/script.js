@@ -1,71 +1,93 @@
-// LOGIN CONFIGURADO AQUI
-const LOGIN_USER = "admin";
-const LOGIN_PASS = "1234";
+document.addEventListener("DOMContentLoaded", () => {
+    const isDashboard = window.location.pathname.includes("dashboard.html");
+    if (!isDashboard) return;
 
-// Função de login
-function fazerLogin() {
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
+    const btnPromocoes = document.getElementById("btn-promocoes");
+    const conteudo = document.getElementById("conteudo");
 
-  if (user === LOGIN_USER && pass === LOGIN_PASS) {
-    window.location.href = "dashboard.html"; // vai para o painel
-  } else {
-    document.getElementById("login-error").innerText = "Usuário ou senha incorretos.";
-  }
-}
-
-document.getElementById("login-btn")?.addEventListener("click", fazerLogin);
-
-// --- MOSTRAR ANÚNCIOS AO CLICAR ---
-document.getElementById("btn-anuncios").addEventListener("click", () => {
-    document.getElementById("content-anuncios").style.display = "block";
-    carregarDados();
+    btnPromocoes.addEventListener("click", () => {
+        carregarTabela();
+    });
 });
 
-// --- CARREGAR JSON ---
-async function carregarDados() {
+// -------- CARREGAR JSON --------
+async function carregarTabela() {
+    const conteudo = document.getElementById("conteudo");
+    conteudo.innerHTML = "<h2>Carregando dados...</h2>";
+
     try {
-        const resposta = await fetch("dados.json");
-        const dados = await resposta.json();
+        const response = await fetch("dados.json");
+        if (!response.ok) throw new Error("Erro ao carregar JSON");
 
-        const tabela = document.querySelector("#tabela-promos tbody");
-        tabela.innerHTML = "";
-
-        const divergenciasLista = document.getElementById("lista-divergencias");
-        divergenciasLista.innerHTML = "";
-
-        dados.forEach(item => {
-            const tr = document.createElement("tr");
-
-            tr.innerHTML = `
-                <td>${item.item_id}</td>
-                <td>${item.promotion_name}</td>
-                <td>${item.status}</td>
-                <td>${item.market_price}</td>
-                <td>${item.original_price}</td>
-                <td>${item.min_discount}</td>
-                <td>${item.max_discount}</td>
-                <td>${item.suggested_price}</td>
-                <td>${item.divergencia ? "⚠️" : ""}</td>
-            `;
-
-            tabela.appendChild(tr);
-
-            if (item.divergencia) {
-                const li = document.createElement("li");
-                li.textContent = `${item.item_id} - ${item.promotion_name}`;
-                divergenciasLista.appendChild(li);
-            }
-        });
+        const dados = await response.json();
+        montarTabela(dados);
 
     } catch (erro) {
-        console.error("Erro ao carregar dados:", erro);
+        conteudo.innerHTML = `<p style='color:red;'>Erro ao carregar dados: ${erro}</p>`;
     }
 }
 
-// --- EXPORTAR XLSX ---
-document.getElementById("export-btn").addEventListener("click", () => {
-    const tabela = document.getElementById("tabela-promos");
-    const wb = XLSX.utils.table_to_book(tabela);
-    XLSX.writeFile(wb, "promocoes.xlsx");
-});
+// -------- MONTAR TABELA --------
+function montarTabela(dados) {
+    const conteudo = document.getElementById("conteudo");
+
+    if (!Array.isArray(dados) || dados.length === 0) {
+        conteudo.innerHTML = "<p>Nenhum dado encontrado.</p>";
+        return;
+    }
+
+    // identificar repetições de item_id (MLB)
+    const contagem = {};
+    dados.forEach(d => {
+        contagem[d.item_id] = (contagem[d.item_id] || 0) + 1;
+    });
+
+    // renomear status
+    dados.forEach(item => {
+        if (item.status === "started") item.status = "ATIVO";
+        if (item.status === "candidate") item.status = "ELEGÍVEL";
+    });
+
+    let html = `
+        <h2>Anúncios em promoção</h2>
+        <table class="tabela-dados">
+            <thead>
+                <tr>
+                    <th>MLB</th>
+                    <th>Campanha</th>
+                    <th>Tipo</th>
+                    <th>Status</th>
+                    <th>Preço Mercado</th>
+                    <th>Preço Atual</th>
+                    <th>Preço Original</th>
+                    <th>Mín.</th>
+                    <th>Máx.</th>
+                    <th>Sugerido</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    dados.forEach(item => {
+        const repetido = contagem[item.item_id] > 1;
+        const cor = repetido ? "style='background:#fff59d;'" : "";
+
+        html += `
+            <tr ${cor}>
+                <td>${item.item_id}</td>
+                <td>${item.promotion_name}</td>
+                <td>${item.promotion_type}</td>
+                <td>${item.status}</td>
+                <td>${item.preco_mercado}</td>
+                <td>${item.price ?? "-"}</td>
+                <td>${item.original_price ?? "-"}</td>
+                <td>${item.min_discounted_price ?? "-"}</td>
+                <td>${item.max_discounted_price ?? "-"}</td>
+                <td>${item.suggested_discounted_price ?? "-"}</td>
+            </tr>
+        `;
+    });
+
+    html += "</tbody></table>";
+    conteudo.innerHTML = html;
+}
