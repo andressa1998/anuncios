@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Wheel Tech Bicycling - Login</title>
+
     <style>
         body {
             margin: 0;
@@ -10,22 +11,28 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f5faff;
             font-family: Arial, sans-serif;
+
+            /* degradê suave azul → verde */
+            background: linear-gradient(135deg, #004aad, #00b76f);
         }
 
+        /* Caixa central */
         .login-box {
-            background: white;
+            background: rgba(255, 255, 255, 0.92);
             padding: 40px;
             width: 350px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 14px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.15);
             text-align: center;
+            backdrop-filter: blur(4px);
         }
 
         h1 {
             margin-bottom: 25px;
             color: #004aad;
+            font-size: 22px;
+            letter-spacing: 1px;
         }
 
         input {
@@ -34,6 +41,7 @@
             margin-top: 10px;
             border-radius: 8px;
             border: 1px solid #aaa;
+            font-size: 15px;
         }
 
         button {
@@ -46,13 +54,16 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         button:hover {
             background: #005fcc;
+            transform: scale(1.02);
         }
     </style>
 </head>
+
 <body>
 
     <div class="login-box">
