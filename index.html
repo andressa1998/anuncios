@@ -1,0 +1,60 @@
+<body>
+  <div class="container">
+    <!-- Sidebar sempre visível -->
+    <aside class="sidebar">
+      <div class="brand">WHEEL TECH<br>BICYCLING</div>
+      <nav>
+        <button class="menu-btn" id="btn-anuncios">Anúncios em Promoção</button>
+      </nav>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="main">
+      <!-- Tela de Login -->
+      <section id="login-container" class="login-box">
+        <h2>Acesso Restrito</h2>
+        <input type="text" id="username" placeholder="Usuário">
+        <input type="password" id="password" placeholder="Senha">
+        <button id="login-btn" class="login-btn">Entrar</button>
+        <p id="login-error" class="error"></p>
+      </section>
+
+      <!-- Conteúdo real -->
+      <section id="content-container" style="display:none;">
+        <header class="top-bar">
+          <h1>Anúncios em Promoção</h1>
+          <button id="export-btn" class="export-btn">Exportar XLSX</button>
+        </header>
+
+        <div class="card">
+          <div class="table-wrapper">
+            <table id="tabela-promos">
+              <thead>
+                <tr>
+                  <th>Item ID</th>
+                  <th>Nome Promoção</th>
+                  <th>Status</th>
+                  <th>Preço Mercado</th>
+                  <th>Preço Original</th>
+                  <th>Mín. Desconto</th>
+                  <th>Máx. Desconto</th>
+                  <th>Preço Sugerido</th>
+                  <th>Divergência</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Itens com Divergência</h2>
+          <ul id="lista-divergencias" class="lista-div"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="script.js"></script>
+</body>
